@@ -11,18 +11,20 @@ import org.springframework.validation.annotation.Validated;
 public class CacheContent {
     private final Bloom bloom = new Bloom();
     private final Cache cache = new Cache();
-    private final Snowflake snowflake = new Snowflake();
-    @Data
-    public static class Bloom{
-
-
-    }
+//    private final Snowflake snowflake = new Snowflake();
     @Data
     public static class Cache {
         /** L1 本地缓存最大条目 */
         private int maximumSize = 100_000;
         /** L1 本地缓存 TTL（秒） */
         private long ttlSeconds = 300;
+    }
+    @Data
+    public static class Bloom {
+        /** 预期插入量 n */
+        private long expectedInsertions = 10_000_000;
+        /** 期望误判率 p */
+        private double fpp = 0.01;
     }
 
 
