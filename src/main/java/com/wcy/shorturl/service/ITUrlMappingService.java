@@ -1,7 +1,10 @@
 package com.wcy.shorturl.service;
 
+import com.wcy.shorturl.domain.dto.CreateShortUrlRequest;
 import com.wcy.shorturl.domain.po.TUrlMapping;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import javax.validation.Valid;
 
 /**
  * <p>
@@ -13,4 +16,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ITUrlMappingService extends IService<TUrlMapping> {
 
+    String getShort_Url( CreateShortUrlRequest request);
 }

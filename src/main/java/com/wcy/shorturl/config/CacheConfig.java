@@ -9,8 +9,8 @@ import java.time.Duration;
 public class CacheConfig {
 
     @Bean
-    public Cache<String, String> localUrlCache(CacheContent properties) {
-        CacheContent.Cache conf = properties.getCache();
+    public Cache<String, String> localUrlCache(ContentClint properties) {
+        ContentClint.Cache conf = properties.getCache();
         return Caffeine.newBuilder()
                 .maximumSize(conf.getMaximumSize())
                 .expireAfterWrite(Duration.ofSeconds(conf.getTtlSeconds()))

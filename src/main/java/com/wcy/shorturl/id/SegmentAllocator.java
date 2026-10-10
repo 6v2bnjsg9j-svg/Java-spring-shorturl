@@ -45,7 +45,7 @@ public class SegmentAllocator implements IdGenerator , DisposableBean {
     @Override
     public long nextId(String bizTag) {
         SegmentBuffer buffer=buffers.computeIfAbsent(bizTag, SegmentBuffer::new);
-        buffer.takeNext(()->{
+        return buffer.takeNext(()->{
             return getnew(bizTag);
         },executor);
     }

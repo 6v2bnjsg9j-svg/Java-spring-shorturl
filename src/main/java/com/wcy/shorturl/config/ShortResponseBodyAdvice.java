@@ -3,6 +3,7 @@ package com.wcy.shorturl.config;
 import com.wcy.shorturl.domain.vo.Result;
 import com.wcy.shorturl.util.NoWrap;
 import org.springframework.core.MethodParameter;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -31,8 +32,15 @@ public class ShortResponseBodyAdvice implements ResponseBodyAdvice<Object> {
 
         Class<?> type = returnType.getParameterType();
 
-
-
+        if (Result.class.isAssignableFrom(type)
+                || ResponseEntity.class.isAssignableFrom(type)
+                || Resource.class.isAssignableFrom(type)
+                || StreamingResponseBody.class.isAssignableFrom(type)
+                || byte[].class.isAssignableFrom(type)
+                || String.class.isAssignableFrom(type)
+                || void.class.equals(type)) {
+            return false;
+        }
         return true;
     }
 

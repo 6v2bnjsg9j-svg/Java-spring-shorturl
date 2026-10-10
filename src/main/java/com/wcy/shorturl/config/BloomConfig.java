@@ -11,7 +11,7 @@ import java.nio.charset.StandardCharsets;
 public class BloomConfig {
 
     @Bean
-    public BloomFilter<String> bloomFilter(CacheContent cacheContent) {
+    public BloomFilter<String> bloomFilter(ContentClint cacheContent) {
         return BloomFilter.create(
                 Funnels.stringFunnel(StandardCharsets.UTF_8),
                 cacheContent.getBloom().getExpectedInsertions(),

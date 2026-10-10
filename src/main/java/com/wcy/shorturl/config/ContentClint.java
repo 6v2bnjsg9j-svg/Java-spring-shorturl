@@ -8,7 +8,16 @@ import org.springframework.validation.annotation.Validated;
 @Data
 @Validated
 @ConfigurationProperties(prefix = "short-url")
-public class CacheContent {
+public class ContentClint {
+    /** 发号策略：segment（号段+双Buffer）| snowflake（雪花ID） */
+    private String idStrategy = "segment";
+
+    /** 短链域名，如 http://s.cn/ */
+    private String domain;
+
+    /** 跳转状态码：302 或 301 */
+    private int redirectCode = 302;
+
     private final Bloom bloom = new Bloom();
     private final Cache cache = new Cache();
 //    private final Snowflake snowflake = new Snowflake();

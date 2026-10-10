@@ -3,7 +3,6 @@ package com.wcy.shorturl.Cache;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.benmanes.caffeine.cache.Cache;
-import com.wcy.shorturl.config.CacheContent;
 import com.wcy.shorturl.domain.po.TUrlMapping;
 import com.wcy.shorturl.mapper.TUrlMappingMapper;
 import lombok.RequiredArgsConstructor;
