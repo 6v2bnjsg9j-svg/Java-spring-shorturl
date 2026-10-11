@@ -4,13 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21c8e8ba-9792-418b-a07d-fde57057aa22" name="更改" comment="feat: 短链创建功能完成（查重 + 发号 + Base62 + 缓存 + Bloom）&#10;&#10;- 暂未处理并发场景下的重复创建问题&#10;- 后续计划：唯一索引 / Redisson 锁">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/wcy/shorturl/config/RedissonConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/wcy/shorturl/domain/pro/Url_lock.java" afterDir="false" />
+    <list default="true" id="21c8e8ba-9792-418b-a07d-fde57057aa22" name="更改" comment="feat: 短链创建加入 Redisson 分布式锁 + 快速路径&#10;&#10;- 无锁快速路径处理重复提交&#10;- 锁内 double-check 防并发重复创建&#10;- AopContext 保证事务提交先于锁释放">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/wcy/shorturl/Limt/AspectLimit.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/wcy/shorturl/Limt/Limiter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/wcy/shorturl/Limt/SlidingWindowRateLimiter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/wcy/shorturl/common/ApiResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/wcy/shorturl/common/BizException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/wcy/shorturl/common/ErrorCode.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/wcy/shorturl/common/GlobalExceptionHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/lua/limiter.lua" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/wcy/shorturl/ShortUrlApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wcy/shorturl/ShortUrlApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/wcy/shorturl/service/ITUrlMappingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wcy/shorturl/service/ITUrlMappingService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/wcy/shorturl/service/impl/TUrlMappingServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wcy/shorturl/service/impl/TUrlMappingServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wcy/shorturl/controller/TUrlMappingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wcy/shorturl/controller/TUrlMappingController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -157,7 +161,7 @@
       <workItem from="1791549673689" duration="1205000" />
       <workItem from="1791552586840" duration="518000" />
       <workItem from="1791631380997" duration="7946000" />
-      <workItem from="1791700736001" duration="5163000" />
+      <workItem from="1791700736001" duration="10775000" />
     </task>
     <task id="LOCAL-00001" summary="初始化项目">
       <option name="closed" value="true" />
@@ -191,7 +195,15 @@
       <option name="project" value="LOCAL" />
       <updated>1791638329909</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="feat: 短链创建加入 Redisson 分布式锁 + 快速路径&#10;&#10;- 无锁快速路径处理重复提交&#10;- 锁内 double-check 防并发重复创建&#10;- AopContext 保证事务提交先于锁释放">
+      <option name="closed" value="true" />
+      <created>1791706073492</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1791706073492</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -202,7 +214,8 @@
     <MESSAGE value="Base62转换函数完成" />
     <MESSAGE value="完成了返回包装，和数据库发号逻辑的编写" />
     <MESSAGE value="feat: 短链创建功能完成（查重 + 发号 + Base62 + 缓存 + Bloom）&#10;&#10;- 暂未处理并发场景下的重复创建问题&#10;- 后续计划：唯一索引 / Redisson 锁" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: 短链创建功能完成（查重 + 发号 + Base62 + 缓存 + Bloom）&#10;&#10;- 暂未处理并发场景下的重复创建问题&#10;- 后续计划：唯一索引 / Redisson 锁" />
+    <MESSAGE value="feat: 短链创建加入 Redisson 分布式锁 + 快速路径&#10;&#10;- 无锁快速路径处理重复提交&#10;- 锁内 double-check 防并发重复创建&#10;- AopContext 保证事务提交先于锁释放" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: 短链创建加入 Redisson 分布式锁 + 快速路径&#10;&#10;- 无锁快速路径处理重复提交&#10;- 锁内 double-check 防并发重复创建&#10;- AopContext 保证事务提交先于锁释放" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
