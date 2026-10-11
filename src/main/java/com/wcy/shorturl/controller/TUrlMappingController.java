@@ -23,12 +23,12 @@ import javax.validation.Valid;
  * @since 2026-09-28
  */
 @RestController
-@RequestMapping("/t-url-mapping")
+@RequestMapping("/api")
 public class TUrlMappingController {
     @Autowired
     private ITUrlMappingService itUrlMappingService;
 
-    @PostMapping
+    @PostMapping("/shorten")
     @Limiter(limit = 10,windowSeconds = 1,key = "")
     public ShortUrlResponse get_short(@Valid @RequestBody CreateShortUrlRequest shortUrlRequest){
         String shorturl=itUrlMappingService.getShort_Url(shortUrlRequest);

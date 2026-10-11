@@ -21,7 +21,6 @@ public class AspectLimit {
     @Around("@annotation(limiter)")
     public Object around(ProceedingJoinPoint joinPoint, Limiter limiter) throws Throwable
     {
-        //TODO 可以用我们用户的id作为key
 //        Long id= CurrentHolder.getCurrentId();
 //        if(id==null)
 //            throw new RuntimeException("未登录");
