@@ -3,8 +3,7 @@ package com.wcy.shorturl.service;
 import com.wcy.shorturl.domain.dto.CreateShortUrlRequest;
 import com.wcy.shorturl.domain.po.TUrlMapping;
 import com.baomidou.mybatisplus.extension.service.IService;
-
-import javax.validation.Valid;
+import com.wcy.shorturl.domain.pro.Url_lock;
 
 /**
  * <p>
@@ -17,4 +16,7 @@ import javax.validation.Valid;
 public interface ITUrlMappingService extends IService<TUrlMapping> {
 
     String getShort_Url( CreateShortUrlRequest request);
+
+    Url_lock SelectAndGet(String LongUrl, Long hash, CreateShortUrlRequest request);
+
 }
