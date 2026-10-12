@@ -19,4 +19,5 @@ public interface ITUrlMappingService extends IService<TUrlMapping> {
 
     Url_lock SelectAndGet(String LongUrl, Long hash, CreateShortUrlRequest request);
 
+    String getlongUrl(String code);
 }
