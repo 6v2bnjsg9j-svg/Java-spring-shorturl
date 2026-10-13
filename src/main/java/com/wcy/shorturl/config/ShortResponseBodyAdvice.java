@@ -1,5 +1,6 @@
 package com.wcy.shorturl.config;
 
+import com.wcy.shorturl.common.ApiResponse;
 import com.wcy.shorturl.domain.vo.Result;
 import com.wcy.shorturl.util.NoWrap;
 import org.springframework.core.MethodParameter;

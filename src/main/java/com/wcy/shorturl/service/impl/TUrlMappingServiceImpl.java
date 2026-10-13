@@ -337,5 +337,8 @@ public class TUrlMappingServiceImpl extends ServiceImpl<TUrlMappingMapper, TUrlM
         }
         return null;
     }
-
+    @Override
+    public TUrlMapping getByCode(String code) {
+         return getOne(new LambdaQueryWrapper<TUrlMapping>().eq(TUrlMapping::getShortCode, code));
+    }
 }

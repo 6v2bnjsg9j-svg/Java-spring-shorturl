@@ -5,6 +5,7 @@ import com.wcy.shorturl.Limt.Limiter;
 import com.wcy.shorturl.domain.dto.CreateShortUrlRequest;
 import com.wcy.shorturl.domain.vo.ShortUrlResponse;
 import com.wcy.shorturl.service.ITUrlMappingService;
+import com.wcy.shorturl.util.NoWrap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,6 +31,7 @@ public class TUrlMappingController {
 
     @PostMapping("/shorten")
     @Limiter(limit = 10,windowSeconds = 1,key = "")
+    @NoWrap
     public ShortUrlResponse get_short(@Valid @RequestBody CreateShortUrlRequest shortUrlRequest){
         String shorturl=itUrlMappingService.getShort_Url(shortUrlRequest);
         return ShortUrlResponse.builder()
@@ -38,5 +40,4 @@ public class TUrlMappingController {
                 .longUrl(shortUrlRequest.getUrl())
                 .build();
     }
-
 }
