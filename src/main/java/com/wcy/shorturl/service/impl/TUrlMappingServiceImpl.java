@@ -74,7 +74,6 @@ public class TUrlMappingServiceImpl extends ServiceImpl<TUrlMappingMapper, TUrlM
         LongUrl=panUrl(LongUrl);
         // 对url进行哈希计算，并将结果存储到hash变量中
         Long hash = unsignedHash(LongUrl);
-        //=====开始加锁
         // 先查询数据库，判断是否已存在该长链接的短码
         TUrlMapping tUrlMapping = tUrlMappingMapper.selectOne(new LambdaQueryWrapper<TUrlMapping>()
                 .eq(TUrlMapping::getLongUrl, LongUrl)

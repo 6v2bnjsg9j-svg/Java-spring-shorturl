@@ -3,10 +3,12 @@ package com.wcy.shorturl.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
 @Data
 @Validated
+@Component
 @ConfigurationProperties(prefix = "short-url")
 public class ContentClint {
     /** 发号策略：segment（号段+双Buffer）| snowflake（雪花ID） */
@@ -35,7 +37,4 @@ public class ContentClint {
         /** 期望误判率 p */
         private double fpp = 0.01;
     }
-
-
-
 }
