@@ -6,6 +6,7 @@ import com.wcy.shorturl.domain.po.TUrlMapping;
 import com.wcy.shorturl.mapper.TUrlMappingMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
@@ -37,24 +38,28 @@ public class VisitStatsRecorder {
 
 
     @Async("statsExecutor")
-    public void record(String code, String clientIp) {
+    public void record(String code, String visitorId) {
+        // 参数 visitorId 由调用方决定传 IP 还是 userId
         try {
             String day = DAY_FMT.format(LocalDateTime.now());
             String pvKey = PV_KEY_PREFIX + day;
             String uvKey = UV_KEY_PREFIX + day + ":" + code;
-            String setKey = SET_KEY_PREFIX + day ;
+            String setKey = SET_KEY_PREFIX + day;
+
             redisTemplate.opsForHash().increment(pvKey, code, 1);
             redisTemplate.expire(pvKey, 2, TimeUnit.DAYS);
-            redisTemplate.opsForHyperLogLog().add(uvKey, clientIp);
+            redisTemplate.opsForHyperLogLog().add(uvKey, visitorId);
             redisTemplate.expire(uvKey, 2, TimeUnit.DAYS);
             redisTemplate.opsForSet().add(setKey, code);
             redisTemplate.expire(setKey, 2, TimeUnit.DAYS);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             log.error("Failed to record visit stats", e);
         }
     }
     @Scheduled(fixedDelay = 60_000, initialDelay = 60_000)
+    @SchedulerLock(name = "recordpv",
+            lockAtMostFor = "5m",     // 最多持锁 5 分钟（防死锁）
+            lockAtLeastFor = "30s")   // 至少持锁 30 秒（防频繁触发）
     public void recordpv() {
         String day = DAY_FMT.format(LocalDateTime.now());
         String pvKey = PV_KEY_PREFIX + day;
@@ -67,6 +72,11 @@ public class VisitStatsRecorder {
                 clientIp = (String) shortCode;
                 Object value = entry.getValue();
                 long count = Long.parseLong(String.valueOf(entry.getValue()));
+                if(count<=0)
+                {
+                    redisTemplate.opsForHash().delete(pvKey, clientIp);
+                    continue;
+                }
                 long id = Base62.decode(clientIp);
                 urlMappingMapper.updatepv(id, count);
                 redisTemplate.opsForHash().increment(pvKey,clientIp, -count);
@@ -81,6 +91,9 @@ public class VisitStatsRecorder {
 
 
     @Scheduled(cron = "0 0 1 * * ?" )
+    @SchedulerLock(name = "recorduv",
+            lockAtMostFor = "30m",     // 最多持锁 30 分钟
+            lockAtLeastFor = "3m")// 至少持锁 3分钟
     public void recorduv() {
         String yesterday = LocalDate.now().minusDays(1).format(DAY_FMT);
         String setkey=SET_KEY_PREFIX + yesterday;
@@ -94,34 +107,18 @@ public class VisitStatsRecorder {
                         long id=Base62.decode(code);
                         urlMappingMapper.updateuv(id,size);
                         redisTemplate.opsForHyperLogLog().delete(uvkey);
+                        redisTemplate.opsForSet().remove(setkey, code);
                     }catch (IllegalArgumentException e) {
                         log.warn("非法短码: {}  code: {}", e.getMessage(),code);
                     }
                 }
+                else{
+                    redisTemplate.opsForSet().remove(setkey, code);
+                }
             }
-            redisTemplate.delete(setkey);
         }catch (Exception e){
             log.warn("UV 刷库失败: {}", e.getMessage());
         }
-    }
-    @Async("statsExecutor")
-    public void recordByUserId(String code, String userId) {
-       try {
-           String day = DAY_FMT.format(LocalDateTime.now());
-           String pvKey = PV_KEY_PREFIX + day;
-           String uvKey = UV_KEY_PREFIX + day + ":" + code;
-           String setKey = SET_KEY_PREFIX + day ;
-
-           redisTemplate.opsForHash().increment(pvKey, code, 1);
-           redisTemplate.expire(pvKey, 2, TimeUnit.DAYS);
-           redisTemplate.opsForHyperLogLog().add(uvKey, userId);
-           redisTemplate.expire(uvKey, 2, TimeUnit.DAYS);
-           redisTemplate.opsForSet().add(setKey, code);
-           redisTemplate.expire(setKey, 2, TimeUnit.DAYS);
-       } catch (Exception e) {
-           log.error("Failed to record visit stats", e);
-       }
-
     }
 
 }
