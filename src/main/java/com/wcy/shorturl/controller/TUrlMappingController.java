@@ -35,7 +35,7 @@ public class TUrlMappingController {
     public ShortUrlResponse get_short(@Valid @RequestBody CreateShortUrlRequest shortUrlRequest){
         String shorturl=itUrlMappingService.getShort_Url(shortUrlRequest);
         return ShortUrlResponse.builder()
-                .code(shorturl.substring(shorturl.lastIndexOf("/",+1)))
+                .code(shorturl.substring(shorturl.lastIndexOf('/',+1)))
                 .shortUrl(shorturl)
                 .longUrl(shortUrlRequest.getUrl())
                 .build();

@@ -11,16 +11,10 @@ import java.util.Collections;
 import java.util.UUID;
 
 @Component
+@RequiredArgsConstructor
 public class SlidingWindowRateLimiter {
-    private static final StringRedisTemplate redisTemplate;
-    private static final  DefaultRedisScript<Long> redisScript;
-    static {
-        redisTemplate=new StringRedisTemplate();
-        DefaultRedisScript<Long> s = new DefaultRedisScript<>();
-        s.setLocation(new ClassPathResource("lua/limiter.lua"));
-        s.setResultType(Long.class);
-        redisScript=s;
-    }
+    private final StringRedisTemplate redisTemplate;
+    private final DefaultRedisScript<Long> redisScript;
 
     public Boolean IsContinue(String key, int limit, int windowSeconds)
     {

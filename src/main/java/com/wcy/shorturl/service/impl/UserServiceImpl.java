@@ -19,11 +19,17 @@ import java.util.Map;
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
     @Override
     public String login(User login) {
-        User one = getOne(new LambdaQueryWrapper<User>()
-                .eq(User::getUsername, login.getUsername())
-                .eq(User::getPassword, login.getPassword()));
-        if(login==null)
+        if (login == null || login.getUsername() == null || login.getPassword() == null) {
             throw new RuntimeException("用户名或密码错误");
+        }
+
+        User one = getOne(new LambdaQueryWrapper<User>().eq(User::getUsername, login.getUsername())
+                .eq(User::getPassword, login.getPassword()));
+
+        if (one == null) {
+            throw new RuntimeException("用户名或密码错误");
+        }
+
         Map<String ,Object> claims = new HashMap<>();
         claims.put("id",one.getId());
         String token=JwtUtil.gettoken(claims);

@@ -50,3 +50,6 @@ short-url:
   snowflake:
     worker-id: 1
     datacenter-id: 1
+jwt:
+  secret: "c3VwZXItc2VjcmV0LWtleS1mb3Itand0LWhzMjU2LTEyMzQ1Ng=="
+  expiration: 86400000

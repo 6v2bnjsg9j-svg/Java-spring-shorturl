@@ -32,7 +32,7 @@ public class CachePreheatRunner implements ApplicationRunner {
         }
         Map<String,String>  map=objects.stream()
                 .filter(o->o.getLongUrl()!=null&&o.getShortCode()!=null)
-                .collect(Collectors.toMap(TUrlMapping::getLongUrl,TUrlMapping::getShortCode));
+                .collect(Collectors.toMap(TUrlMapping::getShortCode,TUrlMapping::getLongUrl));
         cache.putAll(map);
         log.info("缓存预热完成");
     }
