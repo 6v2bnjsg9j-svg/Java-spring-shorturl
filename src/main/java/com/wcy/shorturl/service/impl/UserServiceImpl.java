@@ -17,6 +17,8 @@ import java.util.Map;
 
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
+    @Autowired
+    private JwtUtil jwtUtil;
     @Override
     public String login(User login) {
         if (login == null || login.getUsername() == null || login.getPassword() == null) {
@@ -32,7 +34,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
         Map<String ,Object> claims = new HashMap<>();
         claims.put("id",one.getId());
-        String token=JwtUtil.gettoken(claims);
+        String token=jwtUtil.getToken(claims);
         return token;
     }
 }
