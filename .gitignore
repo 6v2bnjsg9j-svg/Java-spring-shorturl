@@ -1,0 +1,27 @@
+# ---- 编译产物 ----
+target/
+*.class
+*.jar
+!.mvn/wrapper/maven-wrapper.jar
+
+# ---- IDE ----
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.classpath
+.project
+.settings/
+
+# ---- 日志 ----
+logs/
+*.log
+
+# ---- 操作系统 ----
+.DS_Store
+Thumbs.db
+
+# ---- 本地环境配置 ----
+*.local.yml
+*.local.properties
